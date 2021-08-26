@@ -388,7 +388,7 @@ module StripeMock
       lines << Data.mock_line_item() if lines.empty?
       invoice = {
         id: 'in_test_invoice',
-        status: 'open',
+        status: 'draft',
         invoice_pdf: 'pdf_url',
         hosted_invoice_url: 'hosted_invoice_url',
         created: 1349738950,
