@@ -10,6 +10,7 @@ module StripeMock
         klass.add_handler 'get /v1/invoices',                :list_invoices
         klass.add_handler 'post /v1/invoices/(.*)/pay',      :pay_invoice
         klass.add_handler 'post /v1/invoices/(.*)',          :update_invoice
+        klass.add_handler 'post /v1/invoices/(.*)/finalize', :finalize_invoice
       end
 
       def new_invoice(route, method_url, params, headers)
@@ -54,6 +55,13 @@ module StripeMock
         assert_existence :invoice, $1, invoices[$1]
         charge = invoice_charge(invoices[$1])
         invoices[$1].merge!(:paid => true, :attempted => true, :charge => charge[:id])
+      end
+
+      def finalize_invoice(route, method_url, params, headers)
+        route =~ method_url
+        assert_existence :invoice, $1, invoices[$1]
+        raise Stripe::InvalidRequestError.new('This invoice is already finalized, you can\'t re-finalize a non-draft invoice.', nil, http_status: 400) if invoices[$1].status != 'draft'
+        invoices[$1].merge!(status: 'open')
       end
 
       def upcoming_invoice(route, method_url, params, headers = {})
