@@ -87,6 +87,7 @@ module StripeMock
         'transfer.created',
         'transfer.paid',
         'transfer.updated',
+        'transfer.reversed',
         'transfer.failed'
       ]
     end
