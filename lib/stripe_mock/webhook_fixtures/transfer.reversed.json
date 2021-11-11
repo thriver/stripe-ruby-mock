@@ -1,37 +1,54 @@
 {
   "object": {
     "id": "tr_00000000000000",
-    "date": 1469629446,
+    "date": 1468119587,
     "type": "stripe_account",
     "amount": 100000,
+    "method": "standard",
     "object": "transfer",
     "status": "paid",
-    "created": 1469629446,
+    "created": 1468119587,
     "currency": "cad",
     "livemode": false,
     "metadata": {},
-    "reversed": false,
+    "reversed": true,
     "recipient": null,
     "reversals": {
       "url": "/v1/transfers/tr_00000000000000/reversals",
-      "data": null,
+      "data": [
+        {
+          "id": "trr_00000000000000",
+          "amount": 100000,
+          "object": "transfer_reversal",
+          "created": 1478196222,
+          "currency": "cad",
+          "metadata": {},
+          "transfer": "tr_00000000000000",
+          "balance_transaction": "txn_00000000000000"
+        }
+      ],
       "object": "list",
       "has_more": false,
-      "total_count": 0
+      "total_count": 1
     },
     "description": "STRIPE TRANSFER",
     "destination": "acct_00000000000000",
     "source_type": "card",
     "failure_code": null,
-    "amount_reversed": 0,
+    "amount_reversed": 100000,
     "application_fee": null,
     "failure_message": null,
     "source_transaction": null,
     "balance_transaction": "txn_00000000000000",
     "destination_payment": "py_00000000000000",
-    "statement_descriptor": "TRANSFER"
+    "statement_descriptor": null
   },
   "previous_attributes": {
-    "description": "STRIPE TRANSFER"
+    "reversed": false,
+    "reversals": {
+      "data": null,
+      "total_count": 0
+    },
+    "amount_reversed": 0
   }
 }
