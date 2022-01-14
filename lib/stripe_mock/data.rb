@@ -759,7 +759,7 @@ module StripeMock
         :created => 1478196222,
         :object => 'transfer_reversal',
         :metadata => {}
-      }
+      }.merge(params)
     end
 
     def self.mock_payout(params={})
