@@ -12,7 +12,7 @@ module StripeMock
         def new_session(route, method_url, params, headers)
           id = params[:id] || new_id('cs')
 
-          [:cancel_url, :payment_method_types, :success_url].each do |p|
+          [:cancel_url, :success_url].each do |p|
             require_param(p) if params[p].nil? || params[p].empty?
           end
 
@@ -46,7 +46,18 @@ module StripeMock
           amount = nil
           currency = nil
           if line_items
-            amount = line_items.map { |line_item| prices[line_item[:price]][:unit_amount] * line_item[:quantity] }.sum
+            amount = 0
+
+            line_items.each do |line_item| 
+              price = prices[line_item[:price]]
+
+              if price.nil?
+                raise StripeMock::StripeMockError.new("Price not found for ID: #{line_item[:price]}")
+              end
+
+              amount += (price[:unit_amount] * line_item[:quantity])
+            end
+
             currency = prices[line_items.first[:price]][:currency]
           end
 
@@ -56,7 +67,7 @@ module StripeMock
           case params[:mode]
           when nil, "payment"
             params[:customer] ||= new_customer(nil, nil, {email: params[:customer_email]}, nil)[:id]
-            require_params(:line_items) if params[:line_items].nil? || params[:line_items].empty?
+            require_param(:line_items) if params[:line_items].nil? || params[:line_items].empty?
             payment_intent = new_payment_intent(nil, nil, {
               amount: amount,
               currency: currency,
@@ -77,7 +88,7 @@ module StripeMock
             payment_status = "no_payment_required"
           when "subscription"
             params[:customer] ||= new_customer(nil, nil, {email: params[:customer_email]}, nil)[:id]
-            require_params(:line_items) if params[:line_items].nil? || params[:line_items].empty?
+            require_param(:line_items) if params[:line_items].nil? || params[:line_items].empty?
             checkout_session_line_items[id] = line_items
           else
             throw Stripe::InvalidRequestError.new("Invalid mode: must be one of payment, setup, or subscription", :mode, http_status: 400)
@@ -115,7 +126,7 @@ module StripeMock
             subscription: nil,
             success_url: params[:success_url],
             total_details: nil,
-            url: "https://checkout.stripe.com/pay/#{id}"
+            url: URI.join(StripeMock.checkout_base, id).to_s
           }
         end
 
@@ -143,6 +154,11 @@ module StripeMock
             line_items = assert_existence :checkout_session_line_items, $1, checkout_session_line_items[$1]
             line_items.map do |line_item|
               price = prices[line_item[:price]].clone
+
+              if price.nil?
+                raise StripeMock::StripeMockError.new("Price not found for ID: #{line_item[:price]}")
+              end
+
               {
                 id: line_item[:id],
                 object: "item",
