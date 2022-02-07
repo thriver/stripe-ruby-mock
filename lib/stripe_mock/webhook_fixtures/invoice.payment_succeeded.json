@@ -96,6 +96,7 @@
       "metadata": {},
       "next_payment_attempt": null,
       "paid": true,
+      "paid_out_of_band": false,
       "period_end": 1464084258,
       "period_start": 1464084258,
       "receipt_number": null,

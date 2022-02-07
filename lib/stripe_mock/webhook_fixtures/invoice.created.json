@@ -53,6 +53,7 @@
       "attempted": false,
       "closed": true,
       "paid": true,
+      "paid_out_of_band": false,
       "livemode": false,
       "attempt_count": 1,
       "amount_due": 1000,

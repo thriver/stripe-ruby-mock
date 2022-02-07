@@ -412,6 +412,7 @@ module StripeMock
         forgiven: false,
         metadata: {},
         paid: false,
+        paid_out_of_band: false,
         receipt_number: nil,
         statement_descriptor: nil,
         tax: 10,
@@ -496,6 +497,14 @@ module StripeMock
           :charge => 'ch_test_charge',
           :ending_balance => 0,
           :next_payment_attempt => nil,
+        })
+    end
+
+    def self.mock_paid_out_of_band_invoice
+      test_invoice.merge({
+          :paid => true,
+          :paid_out_of_band => true,
+          :ending_balance => 0,
         })
     end
 
