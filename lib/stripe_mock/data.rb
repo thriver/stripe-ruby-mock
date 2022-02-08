@@ -39,6 +39,7 @@ module StripeMock
           due_by: nil,
           contacted: false
         },
+
         transfer_schedule: {
           delay_days: 7,
           interval: "daily"
@@ -1075,13 +1076,22 @@ module StripeMock
       }
     end
 
-    def self.mock_balance(usd_balance = 10000)
+    def self.mock_balance(usd_balance = 10000, cad_balance = 10000)
       {
         object: "balance",
         available: [
           {
             currency: "usd",
             amount: usd_balance,
+            source_types: {
+              card: 25907032203,
+              bank_account: 108476658,
+              bitcoin_receiver: 1545182
+            }
+          },
+          {
+            currency: "cad",
+            amount: cad_balance,
             source_types: {
               card: 25907032203,
               bank_account: 108476658,
@@ -1096,17 +1106,39 @@ module StripeMock
               card: 25907032203,
               bank_account: 108476658,
               bitcoin_receiver: 1545182
+            },
+          },
+          {
+            currency: "cad",
+            amount: cad_balance,
+            source_types: {
+              card: 25907032203,
+              bank_account: 108476658,
+              bitcoin_receiver: 1545182
             }
           }],
         connect_reserved: [
           {
             currency: "usd",
             amount: 4700
+          },
+          {
+            currency: "cad",
+            amount: 4700
           }],
         livemode: false,
         pending: [
           {
             currency: "usd",
+            amount: 22738833554,
+            source_types: {
+              card: 22738826610,
+              bank_account: 0,
+              bitcoin_receiver: 6944
+            }
+          },
+          {
+            currency: "cad",
             amount: 22738833554,
             source_types: {
               card: 22738826610,
