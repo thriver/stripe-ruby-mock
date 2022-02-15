@@ -66,7 +66,7 @@ module StripeMock
         route =~ method_url
         assert_existence :transfer, $1, transfers[$1]
         transfer = transfers[$1]
-        reversal = Data.mock_transfer_reversal(params.slice(:amount))
+        reversal = Data.mock_transfer_reversal(params.slice(:amount, :description, :metadata))
 
         add_reversal_to_transfer(reversal, transfer)
         reversal
