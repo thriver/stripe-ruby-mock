@@ -385,11 +385,13 @@ module StripeMock
 
     def self.mock_invoice(lines, params={})
       in_id = params[:id] || "test_in_default"
+      number = params[:number] || ('a'..'z').to_a.shuffle[0, 8].join
       currency = params[:currency] || StripeMock.default_currency
       lines << Data.mock_line_item() if lines.empty?
       invoice = {
         id: 'in_test_invoice',
         status: 'draft',
+        number: 'number',
         invoice_pdf: 'pdf_url',
         hosted_invoice_url: 'hosted_invoice_url',
         created: 1349738950,
