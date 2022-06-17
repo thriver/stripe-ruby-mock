@@ -532,6 +532,7 @@ module StripeMock
         discount_amounts: [],
         lines: [],
         metadata: {},
+        memo: nil,
         number: 'CN12345',
         subtotal: params[:amount] || 100,
         total: params[:amount] || 100,
