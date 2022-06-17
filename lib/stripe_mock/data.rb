@@ -519,6 +519,29 @@ module StripeMock
       }
     end
 
+    def self.mock_credit_note(params = {})
+      {
+        id: 'cn_test',
+        object: 'credit_note',
+        amount: 100,
+        created: 1349738920,
+        currency: params[:currency] || StripeMock.default_currency,
+        customer: 'test_customer',
+        invoice: 'in_test_invoice',
+        discount_amount: 0,
+        discount_amounts: [],
+        lines: [],
+        metadata: {},
+        number: 'CN12345',
+        subtotal: params[:amount] || 100,
+        total: params[:amount] || 100,
+        status: 'issued',
+        livemode: false,
+        total_excluding_tax: params[:amount] || 100,
+        type: 'post_payment',
+      }.merge(params)
+    end
+
     def self.mock_order(order_items, params)
       or_id = params[:id] || "test_or_default"
       currency = params[:currency] || 'eur'
