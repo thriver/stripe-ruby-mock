@@ -520,7 +520,7 @@ module StripeMock
     end
 
     def self.mock_credit_note(params = {})
-      {
+      data = {
         id: 'cn_test',
         object: 'credit_note',
         amount: 100,
@@ -540,7 +540,12 @@ module StripeMock
         livemode: false,
         total_excluding_tax: params[:amount] || 100,
         type: 'post_payment',
+        voided_at: nil
       }.merge(params)
+
+      if data[:status] == 'voided'
+        data[:voided_at] = Time.now.to_i
+      end
     end
 
     def self.mock_order(order_items, params)
