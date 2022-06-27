@@ -546,6 +546,8 @@ module StripeMock
       if data[:status] == 'voided'
         data[:voided_at] = Time.now.to_i
       end
+
+      data
     end
 
     def self.mock_order(order_items, params)
