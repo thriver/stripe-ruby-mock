@@ -10,6 +10,8 @@ module StripeMock
         klass.add_handler 'post /v1/payment_methods/(.*)/attach', :attach_payment_method
         klass.add_handler 'post /v1/payment_methods/(.*)/detach', :detach_payment_method
         klass.add_handler 'post /v1/payment_methods/(.*)',        :update_payment_method
+
+        klass.add_handler 'get /v1/customers/(.*)/payment_methods/(.*)', :get_customer_payment_method
       end
 
       # post /v1/payment_methods
@@ -34,6 +36,24 @@ module StripeMock
       def get_payment_method(route, method_url, params, headers)
         id = method_url.match(route)[1] || params[:payment_method]
         payment_method = assert_existence :payment_method, id, payment_methods[id]
+
+        payment_method.clone
+      end
+
+      def get_customer_payment_method(route, method_url, params, headers)
+        stripe_account = headers && headers[:stripe_account] || Stripe.api_key
+
+        customer_id       = method_url.match(route)[1] || params[:customer]
+        payment_method_id = method_url.match(route)[2] || params[:payment_method]
+        assert_existence :customer, customer_id, customers[stripe_account][customer_id]
+
+        clone = payment_methods.clone
+
+        clone.delete_if do |_, value|
+          value[:customer] != customer_id
+        end
+
+        payment_method = assert_existence :payment_method, payment_method_id, clone[payment_method_id]
 
         payment_method.clone
       end
