@@ -9,6 +9,7 @@ module StripeMock
         klass.add_handler 'get /v1/invoices/(.*)',           :get_invoice
         klass.add_handler 'get /v1/invoices',                :list_invoices
         klass.add_handler 'post /v1/invoices/(.*)/pay',      :pay_invoice
+        klass.add_handler 'post /v1/invoices/(.*)/void',     :void_invoice
         klass.add_handler 'post /v1/invoices/(.*)/finalize', :finalize_invoice
         klass.add_handler 'post /v1/invoices/(.*)',          :update_invoice
       end
@@ -54,7 +55,13 @@ module StripeMock
         route =~ method_url
         assert_existence :invoice, $1, invoices[$1]
         charge = invoice_charge(invoices[$1])
-        invoices[$1].merge!(:paid => true, :attempted => true, :charge => charge[:id])
+        invoices[$1].merge!(status: 'paid', paid: true, attempted: true, charge: charge[:id])
+      end
+
+      def void_invoice(route, method_url, params, headers)
+        route =~ method_url
+        assert_existence :invoice, $1, invoices[$1]
+        invoices[$1].merge!(status: 'void')
       end
 
       def finalize_invoice(route, method_url, params, headers)
