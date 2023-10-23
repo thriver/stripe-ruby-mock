@@ -39,6 +39,7 @@
       "setup_intent": null,
       "shipping": null,
       "shipping_address_collection": null,
+      "status": "complete",
       "submit_type": null,
       "subscription": null,
       "success_url": "https://example.com/success",

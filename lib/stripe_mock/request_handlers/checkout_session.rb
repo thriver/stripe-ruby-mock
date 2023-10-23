@@ -61,6 +61,7 @@ module StripeMock
             currency = prices[line_items.first[:price]][:currency]
           end
 
+          status = "open"
           payment_status = "unpaid"
           payment_intent = nil
           setup_intent = nil
@@ -122,6 +123,7 @@ module StripeMock
             setup_intent: setup_intent,
             shipping: nil,
             shipping_address_collection: nil,
+            status: status,
             submit_type: nil,
             subscription: nil,
             success_url: params[:success_url],

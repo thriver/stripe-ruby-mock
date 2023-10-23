@@ -35,6 +35,7 @@
       "setup_intent": "seti_00000000000000",
       "shipping": null,
       "shipping_address_collection": null,
+      "status": "complete",
       "submit_type": null,
       "subscription": null,
       "success_url": "https://example.com/success",
