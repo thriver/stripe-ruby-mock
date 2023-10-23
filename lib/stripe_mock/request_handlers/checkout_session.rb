@@ -63,6 +63,7 @@ module StripeMock
 
           status = "open"
           payment_status = "unpaid"
+          expires_at = Time.now.to_i + (24 * 60 * 60)
           payment_intent = nil
           setup_intent = nil
           case params[:mode]
@@ -112,6 +113,7 @@ module StripeMock
             customer: params[:customer],
             customer_details: nil,
             customer_email: params[:customer_email],
+            expires_at: expires_at,
             livemode: false,
             locale: nil,
             metadata: params[:metadata],

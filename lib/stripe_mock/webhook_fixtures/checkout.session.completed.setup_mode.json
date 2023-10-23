@@ -22,6 +22,7 @@
       "customer": null,
       "customer_details": null,
       "customer_email": null,
+      "expires_at": 1648406355,
       "livemode": false,
       "locale": null,
       "metadata": {},
