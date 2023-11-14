@@ -12,6 +12,7 @@ module StripeMock
         klass.add_handler 'post /v1/invoices/(.*)/void',     :void_invoice
         klass.add_handler 'post /v1/invoices/(.*)/finalize', :finalize_invoice
         klass.add_handler 'post /v1/invoices/(.*)',          :update_invoice
+        klass.add_handler 'delete /v1/invoices/(.*)',        :delete_invoice
       end
 
       def new_invoice(route, method_url, params, headers)
@@ -25,6 +26,12 @@ module StripeMock
         params.delete(:lines) if params[:lines]
         assert_existence :invoice, $1, invoices[$1]
         invoices[$1].merge!(params)
+      end
+
+      def delete_invoice(route, method_url, params, headers)
+        route =~ method_url
+        assert_existence :invoice, $1, invoices[$1]
+        invoices[$1].merge!(:deleted => true)
       end
 
       def list_invoices(route, method_url, params, headers)
